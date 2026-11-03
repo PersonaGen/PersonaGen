@@ -1,0 +1,7 @@
+data:
+  # Replace these paths with local human-reference and generated-agent result directories.
+  human_dir: path/to/human_ood_results
+  agent_dir: outputs/ood/qwen2.5-72b-instruct
+  baselines: ""
+output:
+  dir: results/ood

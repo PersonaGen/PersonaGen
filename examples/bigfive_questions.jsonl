@@ -1,0 +1,3 @@
+{"survey_name": "BIG5_1_million", "original_id": "EXT1", "id": "BIG5", "question": "I am the life of the party.", "original_question": {"id": "EXT1", "text": "I am the life of the party.", "category": "BIG5_Scale"}}
+{"survey_name": "BIG5_1_million", "original_id": "EXT2", "id": "BIG5", "question": "I don't talk a lot.", "original_question": {"id": "EXT2", "text": "I don't talk a lot.", "category": "BIG5_Scale"}}
+{"survey_name": "BIG5_1_million", "original_id": "EXT3", "id": "BIG5", "question": "I feel comfortable around people.", "original_question": {"id": "EXT3", "text": "I feel comfortable around people.", "category": "BIG5_Scale"}}

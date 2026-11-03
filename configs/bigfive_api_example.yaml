@@ -1,0 +1,15 @@
+# Small example: 2 fictional personas x 3 questions = 6 API calls.
+# Set OPENAI_API_KEY in the environment. Do not commit credentials.
+model:
+  name: your-served-model
+  api_base: http://localhost:8000/v1
+runtime:
+  threads: 2
+  max_tokens: 32
+  temperature: 0.7
+data:
+  question_file: examples/bigfive_questions.jsonl
+  persona_file: examples/fictional_personas.jsonl
+output:
+  dir: outputs/api_example
+  flush_every: 1

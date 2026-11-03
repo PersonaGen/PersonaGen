@@ -1,0 +1,16 @@
+model:
+  name: qwen2.5-72b-instruct
+  path: Qwen/Qwen2.5-72B-Instruct
+  port: 8000
+  gpu: 2
+  api_base: http://localhost:8000/v1
+runtime:
+  threads: 16
+  max_tokens: 512
+  temperature: 0.7
+  num_repeat: 1
+data:
+  question_file: examples/ipip50_questions.jsonl
+output:
+  dir: outputs/bigfive/qwen2.5-72b-instruct
+  flush_every: 100

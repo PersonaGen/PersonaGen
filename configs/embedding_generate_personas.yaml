@@ -1,0 +1,15 @@
+model:
+  name: qwen2.5-72b-instruct
+  path: Qwen/Qwen2.5-72B-Instruct
+  port: 8000
+  gpu: 2
+  api_base: http://localhost:8000/v1
+runtime:
+  threads: 16
+  max_tokens: 300
+  temperature: 0.7
+data:
+  input_file: outputs/embeddings/prompt_persona_topk.jsonl
+  survey_type: wvs
+output:
+  file: outputs/embeddings/generated_personas.jsonl

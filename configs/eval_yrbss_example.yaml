@@ -1,0 +1,7 @@
+data:
+  # YRBSS human references are not bundled with this repository.
+  # Replace these paths before running evaluation.
+  method_dir: data/yrbss/method_results
+  human_file: data/yrbss/yrbss_human.jsonl
+output:
+  dir: results/yrbss/evaluation

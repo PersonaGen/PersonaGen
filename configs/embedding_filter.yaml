@@ -1,0 +1,14 @@
+model:
+  name: qwen2.5-72b-instruct
+  path: Qwen/Qwen2.5-72B-Instruct
+  port: 8000
+  gpu: 2
+  api_base: http://localhost:8000/v1
+runtime:
+  threads: 16
+  max_tokens: 10
+  temperature: 0.0
+data:
+  input_file: outputs/embeddings/training_data_long.jsonl,outputs/embeddings/training_data_short.jsonl
+output:
+  dir: outputs/embeddings/filtered

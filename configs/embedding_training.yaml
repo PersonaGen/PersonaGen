@@ -1,0 +1,14 @@
+model:
+  name: qwen2.5-72b-instruct
+  path: Qwen/Qwen2.5-72B-Instruct
+  port: 8000
+  gpu: 2
+  api_base: http://localhost:8000/v1
+runtime:
+  max_tokens: 100
+  temperature: 0.7
+data:
+  persona_file: examples/fictional_personas.jsonl
+  query_type: both
+output:
+  file: outputs/embeddings/training_data.jsonl

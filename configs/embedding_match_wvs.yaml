@@ -1,0 +1,13 @@
+data:
+  persona_file: examples/fictional_personas.jsonl
+  survey_type: wvs
+embedding:
+  model: Qwen/Qwen3-Embedding-0.6B
+  multi_gpu: true
+  top_k: 100
+  batch_size: 32
+  chunk_size: 1000
+  no_save_embeddings: false
+  cache_dir: embeddings_cache
+output:
+  file: outputs/embeddings/prompt_persona_topk.jsonl

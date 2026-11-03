@@ -1,0 +1,7 @@
+data:
+  # WVS human references are not bundled with this repository.
+  # Replace these directories before running evaluation.
+  llm_root: data/wvs/llm_results
+  human_root: data/wvs/human_results
+output:
+  dir: results/wvs/evaluation

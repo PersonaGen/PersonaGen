@@ -1,0 +1,11 @@
+data:
+  # Replace these paths with the human references and generated model outputs
+  # used in your local evaluation run.
+  human_path: path/to/human_bigfive.jsonl
+  origin_path: outputs/bigfive/qwen2.5-72b-instruct/origin.jsonl
+  resampled_jsonl:
+  baselines:
+output:
+  dir: results/bigfive
+# Opt in only for an explicitly reference-calibrated comparison.
+quantile_warp_csn: false
