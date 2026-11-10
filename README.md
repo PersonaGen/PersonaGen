@@ -2,40 +2,51 @@
 
 # PersonaGen
 
-### Population-Aligned Persona Generation for LLM-based Social Simulation
+**Population-Aligned Persona Generation for LLM-based Social Simulation**
 
-**NeurIPS 2026**
+NeurIPS 2026
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-4B2E83)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/Code-MIT-4B2E83)](LICENSE)
-[![arXiv](https://img.shields.io/badge/arXiv-2509.10127-B7A57A)](https://arxiv.org/abs/2509.10127)
-[Paper](https://arxiv.org/abs/2509.10127) · [Quick start](#quick-start) · [Examples](examples/) · [Workflows](docs/usage.md) · [Reproducibility](docs/reproducibility.md)
+[![Paper](https://img.shields.io/badge/arXiv-2509.10127-b31b1b?style=flat-square)](https://arxiv.org/abs/2509.10127v3)
+[![Dataset](https://img.shields.io/badge/🤗_Hugging_Face-Dataset-FFD21E?style=flat-square)](https://huggingface.co/datasets/PersonaGen/PersonaGen)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square)](https://www.python.org/)
+[![License](https://img.shields.io/badge/Code-MIT-2563EB?style=flat-square)](LICENSE)
+
+[Paper](https://arxiv.org/abs/2509.10127v3) · [Dataset](https://huggingface.co/datasets/PersonaGen/PersonaGen) · [Quick start](#quick-start) · [Documentation](docs/usage.md) · [Release notes](RELEASE_NOTES.md)
 
 </div>
 
-**Better social simulation starts with a representative population.** PersonaGen studies how to construct persona sets that reflect population diversity, then adapt them to the population needed by a simulation.
+---
 
-The paper combines narrative persona construction and quality assessment, global alignment to human Big Five response distributions through importance-based selection and entropic optimal-transport refinement, and retrieval-based adaptation to target populations.
+PersonaGen constructs persona populations for LLM-based social simulation, aligning persona responses with human reference distributions and adapting them to target groups.
 
-## What is included
+The paper introduces three stages:
 
-| Component | Included |
-| :-- | :-- |
-| Global alignment reference | New CPU implementation of KDE top-70% selection + entropic OT; [scope and example](docs/alignment.md) |
-| Survey simulation | Direct Big Five prompting; persona-conditioned Big Five and OOD responses |
-| Persona adaptation | Query-pair generation, negative filtering, embedding retrieval, persona refinement |
-| Scoring and evaluation | Strict IPIP-50 item → trait scoring; Big Five and OOD linear-kernel MMD; WVS and YRBSS metrics |
-| Examples | [Sample personas, IPIP questions, and a runnable offline demo](examples/) |
-| Local validation | An offline metric demo, regression tests, and CPU CI |
+1. **Persona construction.** Generate narrative personas from long-term social media histories and assess their quality.
+2. **Population alignment.** Combine importance-based selection with optimal transport to align persona responses with human Big Five distributions.
+3. **Targeted adaptation.** Retrieve and refine personas for specific subpopulations and simulation contexts.
 
-The repository provides code and runnable examples. Start with the examples below, then use the [input schemas](docs/usage.md#data-format) to connect your own persona and survey files. The [paper-to-code map](docs/reproducibility.md) describes the implementation and inputs for each stage.
+## Public release
 
-The implementation retains the original `popalign` Python namespace and CLI for compatibility. `personagen` is an equivalent CLI entry point.
+This release provides selected research code, runnable examples, and a persona demo dataset. See the [reproducibility guide](docs/reproducibility.md) for the correspondence between the paper and the released implementation.
+
+| Resource | Description |
+| :--- | :--- |
+| [Persona dataset](https://huggingface.co/datasets/PersonaGen/PersonaGen) | `demo.jsonl`: 4,990 records with `persona_id`, `persona`, and `id` fields |
+| [Global alignment](docs/alignment.md) | Small-scale CPU reference for KDE-based selection and entropic optimal transport |
+| [Simulation workflows](docs/usage.md) | Direct and persona-conditioned survey responses, retrieval, and refinement |
+| [Scoring and evaluation](docs/scoring.md) | IPIP-50 trait scoring; Big Five, OOD, WVS, and YRBSS evaluation utilities |
+| [Runnable examples](examples/) | Fictional persona inputs, questionnaire examples, and an offline evaluation demo |
+
+### Dataset
+
+The released data is hosted on [Hugging Face](https://huggingface.co/datasets/PersonaGen/PersonaGen). Download [demo.jsonl](https://huggingface.co/datasets/PersonaGen/PersonaGen/resolve/main/demo.jsonl) or browse the dataset files there. Research workflows may require additional survey inputs, human references, and model configuration; see the [input schemas](docs/usage.md#data-format).
 
 ## Quick start
 
+Requires **Python 3.10 or later**.
+
 ```bash
-git clone git@github.com:PersonaGen/PersonaGen.git
+git clone https://github.com/PersonaGen/PersonaGen.git
 cd PersonaGen
 python3 -m venv .venv
 source .venv/bin/activate
@@ -43,62 +54,67 @@ python -m pip install -e .
 personagen --help
 ```
 
-If the system Python does not include `venv`/`ensurepip`, use an existing Python environment or `uv venv --python 3.12 .venv` followed by `uv pip install --python .venv/bin/python -e .`.
+The package retains the `popalign` Python namespace for compatibility. The `personagen` and `popalign` commands are equivalent entry points.
 
-## Examples
+### 1. Run the offline demo
 
-The [examples directory](examples/) contains small inputs and commands for trying the workflows:
-
-| Example | Contents |
-| --- | --- |
-| [Persona inputs](examples/fictional_personas.jsonl) | Two fictional profiles showing the persona schema |
-| [Short questionnaire](examples/bigfive_questions.jsonl) | Three Big Five items for a six-call API example |
-| [Full IPIP questionnaire](examples/ipip50_questions.jsonl) | 50 public-domain items for the scoring workflow |
-| [Offline evaluation](examples/offline_demo.py) | Synthetic response vectors evaluated locally |
-
-### Try it without a GPU or API key
+No GPU or API key is required.
 
 ```bash
 python examples/offline_demo.py
 ```
 
-This runs the Big Five evaluator on small synthetic populations and writes `outputs/demo/baseline_metrics.csv`.
+This evaluates small synthetic populations and writes `outputs/demo/baseline_metrics.csv`.
 
-### Explore the global alignment method
+### 2. Explore population alignment
 
 ```bash
 python -m popalign.alignment --help
 ```
 
-The [alignment walkthrough](docs/alignment.md) supplies a synthetic CSV example for importance-based selection and entropic OT. The CPU reference solver takes scored responses and writes selected source rows, input hashes, and convergence diagnostics. See the walkthrough for its input format and size limits.
+Follow the [alignment walkthrough](docs/alignment.md) for a runnable synthetic CSV example, input formats, and solver limits. This is a newly written CPU reference implementation; full experimental reproduction requires additional inputs and settings.
 
-### Generate responses using an existing endpoint
+### 3. Generate persona-conditioned responses
 
 ```bash
 cp configs/bigfive_api_example.yaml configs/my_bigfive.yaml
-# Edit model.name and model.api_base to match your endpoint.
-export OPENAI_API_KEY="your-key"  # Use the environment, not a committed config.
+# Set model.name and model.api_base in your config.
+export OPENAI_API_KEY="your-key"
 personagen generate bigfive-persona --config configs/my_bigfive.yaml
 ```
 
-The small API example uses two explicitly fictional personas and three Big Five items. API generation may incur charges. All output stays under `outputs/`. The full Big Five config uses the two fictional personas and 50 public-domain IPIP items. OOD configs require user-supplied inputs under `data/local/`. The larger configs in `configs/` use local Qwen2.5-72B serving by default; install `pip install -e '.[serving]'` and provision suitable GPUs before using them. Embedding matching additionally requires `pip install -e '.[embeddings]'`.
+The API example uses two fictional personas and three questionnaire items. API calls may incur charges. Outputs are written under `outputs/`.
 
-For complete 50-item outputs, [score responses into trait means](docs/scoring.md) before evaluating:
+For full IPIP-50 responses, convert item responses into trait means before evaluation:
 
 ```bash
-python -m popalign.scoring --input path/to/responses.jsonl --output outputs/scored/personas.jsonl
+python -m popalign.scoring \
+  --input path/to/responses.jsonl \
+  --output outputs/scored/personas.jsonl
 ```
 
-[Full workflow commands and schemas →](docs/usage.md)
+Local model serving requires `pip install -e '.[serving]'` and suitable GPUs. Embedding retrieval requires `pip install -e '.[embeddings]'`. Larger configs default to local Qwen2.5-72B serving; review their settings and data paths before running.
 
-## Repository layout
+## Documentation
+
+| Guide | Contents |
+| :--- | :--- |
+| [Usage](docs/usage.md) | Workflow commands, configuration, and input schemas |
+| [Alignment](docs/alignment.md) | Selection and optimal-transport reference implementation |
+| [Scoring](docs/scoring.md) | IPIP-50 reverse coding and trait means |
+| [Reproducibility](docs/reproducibility.md) | Paper-to-code map, required inputs, and implementation limits |
+| [Examples](examples/README.md) | Sample inputs and runnable demonstrations |
+
+## Repository structure
 
 ```text
-src/popalign/       Generation, adaptation, evaluation, and CLI
-configs/           YAML examples for individual workflows
-examples/          Runnable examples, sample personas, and IPIP questions
-docs/              Workflow commands, input formats, and reproducibility
-tests/             CPU-only regression and smoke tests
+PersonaGen/
+├── configs/          Workflow configuration examples
+├── docs/             Usage, scoring, alignment, and reproducibility
+├── examples/         Sample inputs and offline demo
+├── scripts/          Workflow helper scripts
+├── src/popalign/     Generation, adaptation, evaluation, and CLI
+└── tests/            CPU regression and smoke tests
 ```
 
 ## Development
@@ -108,7 +124,7 @@ python -m unittest discover -s tests -v
 python -m compileall -q src tests examples
 ```
 
-CI installs the core package and runs the tests and offline demo. It does not call paid APIs, download model weights, or reproduce GPU experiments. Please include your config (with credentials removed), command, and error when opening an issue. See [CONTRIBUTING.md](CONTRIBUTING.md).
+CI runs CPU tests and the offline demo. See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidance.
 
 ## Citation
 
@@ -130,4 +146,8 @@ Machine-readable metadata is in [CITATION.cff](CITATION.cff).
 
 ## License
 
-The original software and code documentation are released under the [MIT License](LICENSE). IPIP questionnaire items are public domain. Third-party datasets, papers, and model weights retain their own terms. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Original code and code documentation are released under the [MIT License](LICENSE). IPIP questionnaire items are public domain. Third-party datasets, papers, and model weights retain their own terms; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Release scope
+
+Due to company policy, we can currently release only the code and examples in this repository and the demo dataset on Hugging Face. The full internal pipeline and remaining research artifacts are not included. See the [reproducibility guide](docs/reproducibility.md) for details.

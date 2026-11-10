@@ -2,6 +2,10 @@
 
 This repository provides code and runnable examples for the paper's workflows. The table below maps each component to its implementation and the additional inputs needed for research runs.
 
+## Public data and release policy
+
+The released persona demo is available as `demo.jsonl` on [Hugging Face](https://huggingface.co/datasets/PersonaGen/PersonaGen), with 4,990 records containing `persona_id`, `persona`, and `id` fields. Due to company policy, only the code and examples in this repository and this demo dataset can currently be released. The full internal pipeline and remaining research artifacts are not included.
+
 ## Paper-to-code map
 
 | Paper component | Code or data in this release | Remaining inputs or implementation |
