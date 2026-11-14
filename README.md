@@ -147,7 +147,3 @@ Machine-readable metadata is in [CITATION.cff](CITATION.cff).
 ## License
 
 Original code and code documentation are released under the [MIT License](LICENSE). IPIP questionnaire items are public domain. Third-party datasets, papers, and model weights retain their own terms; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-
-## Release scope
-
-Due to company policy, we can currently release only the code and examples in this repository and the demo dataset on Hugging Face. The full internal pipeline and remaining research artifacts are not included. See the [reproducibility guide](docs/reproducibility.md) for details.
